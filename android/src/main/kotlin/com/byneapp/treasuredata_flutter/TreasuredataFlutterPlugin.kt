@@ -50,4 +50,8 @@ public class TreasuredataFlutterPlugin: FlutterPlugin, MethodCallHandler {
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
     channel.setMethodCallHandler(null)
   }
+
+  private fun initTreasureData(call: MethodCall, result: Result) {
+    
+  }
 }
