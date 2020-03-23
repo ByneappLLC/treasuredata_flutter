@@ -18,7 +18,7 @@ public class TreasuredataFlutterPlugin: FlutterPlugin, MethodCallHandler {
   private lateinit var channel : MethodChannel
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    channel = MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "treasuredata_flutter")
+    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "treasuredata_flutter")
     channel.setMethodCallHandler(this);
   }
 
