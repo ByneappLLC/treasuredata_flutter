@@ -53,8 +53,8 @@ public class TreasuredataFlutterPlugin(private val context: Context? = null): Fl
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    if (call.method == "getPlatformVersion") {
-      result.success("Android ${android.os.Build.VERSION.RELEASE}")
+    if (call.method == "initTreasureData") {
+      initTreasureData(call, result)
     } else {
       result.notImplemented()
     }
@@ -84,9 +84,10 @@ public class TreasuredataFlutterPlugin(private val context: Context? = null): Fl
     }
 
     try {
-        td = TreasureData(applicationContext)
+      td = TreasureData(applicationContext)
+      result.success(null)
     } catch (e: Exception) {
-      // TODO:
+      result.error("Initialize Error", e.message, e.stackTrace)
     }
   }
 }
