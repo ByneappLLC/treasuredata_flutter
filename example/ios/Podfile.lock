@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - treasuredata_flutter (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - treasuredata_flutter (from `.symlinks/plugins/treasuredata_flutter/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  treasuredata_flutter:
+    :path: ".symlinks/plugins/treasuredata_flutter/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  treasuredata_flutter: dffb2c5756a2ba8d14f66c62b603c7ffc508a0f1
+
+PODFILE CHECKSUM: c34e2287a9ccaa606aeceab922830efb9a6ff69a
+
+COCOAPODS: 1.9.0
