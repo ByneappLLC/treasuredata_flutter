@@ -53,10 +53,19 @@ public class TreasuredataFlutterPlugin(private val context: Context? = null): Fl
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    if (call.method == "initTreasureData") {
-      initTreasureData(call, result)
-    } else {
-      result.notImplemented()
+    when (call.method) {
+        "initTreasureData" -> {
+          initTreasureData(call, result)
+        }
+        "addEvents" -> {
+          addEvents(call, result)
+        }
+        "uploadEvents" -> {
+          uploadEvents()
+        }
+        else -> {
+          result.notImplemented()
+        }
     }
   }
 
@@ -89,5 +98,18 @@ public class TreasuredataFlutterPlugin(private val context: Context? = null): Fl
     } catch (e: Exception) {
       result.error("Initialize Error", e.message, e.stackTrace)
     }
+  }
+
+  private  fun addEvents(call: MethodCall, result: Result) {
+    val eventName = call.argument<String>("eventName")
+    val events = call.argument<Map<String, Any>>("events")
+
+    td.addEvent(eventName, events)
+
+    result.success(null)
+  }
+
+  private fun uploadEvents() {
+    td.uploadEvents()
   }
 }

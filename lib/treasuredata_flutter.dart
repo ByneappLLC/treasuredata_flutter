@@ -18,10 +18,19 @@ class TreasuredataFlutter {
       @required String dbName,
       bool enableAppendUniqueId = false}) async {
     await _channel.invokeMethod('initTreasureData', {
-      apiKey: apiKey,
-      encryptionKey: encryptionKey,
-      dbName: dbName,
-      enableAppendUniqueId: enableAppendUniqueId
+      'apiKey': apiKey,
+      'encryptionKey': encryptionKey,
+      'dbName': dbName,
+      'enableAppendUniqueId': enableAppendUniqueId
     });
   }
+
+  static Future<void> addEvents(
+      String eventName, Map<String, dynamic> events) async {
+    await _channel
+        .invokeMethod('addEvents', {'eventName': eventName, 'events': events});
+  }
+
+  static Future<void> uploadEvents() async =>
+      await _channel.invokeMethod('uploadEvents');
 }
