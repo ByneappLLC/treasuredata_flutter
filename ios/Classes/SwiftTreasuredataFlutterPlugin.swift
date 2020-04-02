@@ -9,6 +9,31 @@ public class SwiftTreasuredataFlutterPlugin: NSObject, FlutterPlugin {
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    result("iOS " + UIDevice.current.systemVersion)
+    switch call.method {
+    case "initTreasureData":
+        initTreasureData(call, result: result)
+    case "addEvents":
+        addEvents()
+    case "uploadEvents":
+        uploadEvents()
+    default:
+        result(FlutterMethodNotImplemented)
+    }
   }
+    
+    private func initTreasureData(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+        let arguments = call.arguments as! Dictionary<String, AnyObject>
+        
+        // TODO
+    }
+    
+    private func addEvents() {
+        // TODO
+    }
+    
+    private func uploadEvents() {
+        // TODO
+    }
+    
+    
 }
