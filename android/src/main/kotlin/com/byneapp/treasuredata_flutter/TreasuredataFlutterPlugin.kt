@@ -150,7 +150,12 @@ public class TreasuredataFlutterPlugin(private val context: Context? = null): Fl
     val table = call.argument<String>("table")
     val events = call.argument<Map<String, Any>>("events")
 
-    TreasureData.sharedInstance().addEvent(database, table, events)
+    if (database != null) {
+      TreasureData.sharedInstance().addEvent(database, table, events)
+    }else{
+      TreasureData.sharedInstance().addEvent(table, event)
+    }
+
 
     result.success(null)
   }

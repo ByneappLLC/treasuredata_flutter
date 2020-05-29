@@ -35,7 +35,6 @@ public class SwiftTreasuredataFlutterPlugin: NSObject, FlutterPlugin {
     
     private func addEvents(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         guard let myArgs = call.arguments as? [String: Any],
-            let database = myArgs["database"] as? String,
             let table = myArgs["table"] as? String,
             let events = myArgs["events"] as? [String: Any] else {
                 
@@ -43,7 +42,11 @@ public class SwiftTreasuredataFlutterPlugin: NSObject, FlutterPlugin {
             return
         }
         
-        TreasureData.sharedInstance().addEvent(events, database: database, table: table)
+        if let database = myArgs["database"] as? String {
+            TreasureData.sharedInstance().addEvent(events, database: database, table: table)
+        }else {
+            TreasureData.sharedInstance().addEvent(events, table: table)
+        }
         result(nil)
     }
     
