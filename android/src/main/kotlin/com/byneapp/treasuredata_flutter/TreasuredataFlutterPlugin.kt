@@ -153,7 +153,7 @@ public class TreasuredataFlutterPlugin(private val context: Context? = null): Fl
     if (database != null) {
       TreasureData.sharedInstance().addEvent(database, table, events)
     }else{
-      TreasureData.sharedInstance().addEvent(table, event)
+      TreasureData.sharedInstance().addEvent(table, events)
     }
 
 
