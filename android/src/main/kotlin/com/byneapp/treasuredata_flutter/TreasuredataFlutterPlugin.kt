@@ -27,8 +27,6 @@ public class TreasuredataFlutterPlugin(private val context: Context? = null): Fl
 
   private lateinit var channel : MethodChannel
 
-  private lateinit var td: TreasureData
-
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     applicationContext = flutterPluginBinding.applicationContext
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "treasuredata_flutter")
@@ -61,7 +59,7 @@ public class TreasuredataFlutterPlugin(private val context: Context? = null): Fl
           addEvents(call, result)
         }
         "uploadEvents" -> {
-          uploadEvents()
+          uploadEvents(call, result)
         }
         else -> {
           result.notImplemented()
@@ -77,13 +75,23 @@ public class TreasuredataFlutterPlugin(private val context: Context? = null): Fl
   private fun initTreasureData(call: MethodCall, result: Result) {
     val apiKey = call.argument<String>("apiKey")
     val encryptionKey = call.argument<String>("encryptionKey")
+    val apiEndpoint = call.argument<String>("apiEndpoint")
 
-    TreasureData.initializeApiEndpoint("https://in.treasuredata.com")
+    // "https://in.treasuredata.com"
+    TreasureData.initializeApiEndpoint(apiEndpoint)
     TreasureData.initializeSharedInstance(applicationContext, apiKey)
     TreasureData.initializeEncryptionKey(encryptionKey)
 
     call.argument<String>("dbName")?.let {
       TreasureData.sharedInstance().setDefaultDatabase(it)
+    }
+
+    call.argument<Boolean>("enableLogging")?.let {
+      if (it) {
+        TreasureData.enableLogging()
+      } else {
+        TreasureData.disableLogging()
+      }
     }
 
     call.argument<Boolean>("enableAppendUniqueId")?.let {
@@ -92,24 +100,68 @@ public class TreasuredataFlutterPlugin(private val context: Context? = null): Fl
       }
     }
 
-    try {
-      td = TreasureData(applicationContext)
-      result.success(null)
-    } catch (e: Exception) {
-      result.error("Initialize Error", e.message, e.stackTrace)
+    call.argument<Boolean>("enableAppendAdvertisingIdentifier")?.let {
+      if (it) {
+        TreasureData.sharedInstance().enableAutoAppendAdvertisingIdentifier()
+      }
     }
-  }
 
-  private  fun addEvents(call: MethodCall, result: Result) {
-    val eventName = call.argument<String>("eventName")
-    val events = call.argument<Map<String, Any>>("events")
+    call.argument<Boolean>("enableAutoAppendModelInformation")?.let {
+      if (it) {
+        TreasureData.sharedInstance().enableAutoAppendModelInformation()
+      }
+    }
 
-    td.addEvent(eventName, events)
+    call.argument<Boolean>("enableAutoAppendAppInformation")?.let {
+      if (it) {
+        TreasureData.sharedInstance().enableAutoAppendAppInformation()
+      }
+    }
+
+    call.argument<Boolean>("enableAutoAppendLocaleInformation")?.let {
+      if (it) {
+        TreasureData.sharedInstance().enableAutoAppendLocaleInformation()
+      }
+    }
+
+    call.argument<Boolean>("enableCustomEvent")?.let {
+      if (it) {
+        TreasureData.sharedInstance().enableCustomEvent()
+      }
+    }
+
+    call.argument<Boolean>("enableAppLifecycleEvent")?.let {
+      if (it) {
+        TreasureData.sharedInstance().enableAppLifecycleEvent()
+      }
+    }
+
+    call.argument<Boolean>("enableInAppPurchaseEvent")?.let {
+      if (it) {
+        TreasureData.sharedInstance().enableInAppPurchaseEvent()
+      }
+    }
 
     result.success(null)
   }
 
-  private fun uploadEvents() {
-    td.uploadEvents()
+  private fun addEvents(call: MethodCall, result: Result) {
+    val database = call.argument<String>("database")
+    val table = call.argument<String>("table")
+    val events = call.argument<Map<String, Any>>("events")
+
+    if (database != null) {
+      TreasureData.sharedInstance().addEvent(database, table, events)
+    }else{
+      TreasureData.sharedInstance().addEvent(table, events)
+    }
+
+
+    result.success(null)
+  }
+
+  private fun uploadEvents(call: MethodCall, result: Result) {
+    TreasureData.sharedInstance().uploadEvents()
+    result.success(null)
   }
 }
